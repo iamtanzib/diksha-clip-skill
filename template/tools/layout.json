@@ -1,0 +1,14 @@
+{
+  "_help": [
+    "One row per layout change: [time in the FINAL audio (same clock as the final transcript), layout, camera].",
+    "layout: split | stack | full | screen. inset camera (split/screen) or full camera: host | guest.",
+    "Put changes in pauses, or exactly on an audio join (both cameras jump there).",
+    "Audio joins are printed by conform.py (joins [...]) and available in the page as DATA.joins."
+  ],
+  "layout": [
+    [0, "split", "guest"],
+    [4.75, "stack", null],
+    [8.67, "split", "guest"],
+    [22.21, "stack", null]
+  ]
+}
