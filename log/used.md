@@ -1,6 +1,40 @@
 # Animations already used (newest first)
 Append one block per delivered clip. Before storyboarding, avoid repeating a concept + motion pair from the last ~10 clips.
 
+## Munnawar Clip 3 (define your role in a startup; wear the hats that bring you joy), 2026-10-29 - Claude (final v4, 3 review rounds), STUDIO in casual style
+- Layout: stack 0-5.8 s, then half (animation top, guest bottom), 3 Diksha reaction cuts; captions on the seam + logo
+- One shape: avatar dot -> name pill -> Clay badge (role field types "Head of Community", strike, "Before that" Clay Cup + Educator chips) -> tracks board (chips ride to lane starts) -> "My job" card (Clay Cup lane thickens into the job bar, 20 -> 30%)
+- Card -> Clay app recorded in Loom (editor KEEP: approved transition); job bar -> Loom's dark vertical control bar; round cam bubble with a talking Munnawar memoji (lip sync from voice envelope); cursor clicks Enrich x3 + Run all on the words
+- Cam bubble opens into the Sculpt stage: memoji bust -> full body, mic up, waves on "hey", fireworks canvas
+- Task cards + his photo cursor hesitates, picks Clay Cup -> the picked card opens into a Clay team directory (titles type: Schemer in Residence, Vibes Artist) -> shrinks into his avatar circle, memoji swaps in, hats drop on/lift off per beat with a label pill, expressions (no lip sync), hearts on joy, ring draws on excel
+- Editor rejected: v1 clip+scale morphs, made-up photo crop; v2 blur build-ins ("slideshow"), cramped/unaligned cards, unexplained "On stage at Sculpt" pill, avatar lip-syncing the speaker, off-centre finale; v3 intro jitter (children laid out from the springing box geometry -> give shared elements their own damped springs)
+
+## Munnawar Clip 2 (studio, online UI style, 50/50) - UGC builds trust, 2026-10-29 - Claude (final v3, 2 review rounds)
+- Real Slack channel with an Apple-style Memoji crowd (alohe/avatars); Munnawar types "can you go post this?", it travels from the composer into the channel, then dissolves Telegram-style (canvas dust swept left to right)
+- One Memoji leaves the crowd and becomes Sam's avatar (circle -> Slack rounded square); file chip opens into Sam's thumbnail ("6 HOURS" struck -> rolls to "6 MIN"), centred play over a dimmed preview, thread replies count up
+- Cursor clicks play: thumbnail grows into the real YouTube player (Xavier Caffrey's Clay tutorial); blue speech bubble ABOVE the player with a tail to the speaker, same bubble changes width/words; paid promotion label + desaturate
+- Player shrinks into Munnawar's LinkedIn avatar (real LinkedIn post UI, his real photo), post builds top-down; camera push to his headline + shake on "bias"; trust HUD grows a red Bias tag
+- Avatar travels into Diksha's channel avatar while the LinkedIn link preview opens into her thumbnail (lined paper, Anton "I LEARNED" + blue CLAY on yellow, editor's cutout with white stroke + shadow) on a real YouTube home tile
+- Editor rejected in v1: cross-fade "morphs" (slideshow), pills/stamps/headers interrupting real UI, made-up UI where a real platform is named, faces cropped from the camera files (ask for real photos), self-made background removal
+
+## Munnawar Clip 4 - studio, 50-50 grid (Diksha: "can a creative become a GTM engineer?" -> Clay hired artists, lawyers...), 2026-10-29 - Claude (final v2, 1 review round) · usage 5,637K units, 125 calls
+- Opens on the stacked cameras; on "I have been a journalist" Diksha's real LinkedIn header strip opens into her profile card (real Experience rows + logos from the editor's screenshot), role words marker-swept on the words, Present badge pulses
+- Card folds into a compact profile; a LinkedIn job row opens into "GTM Engineer · Clay"; Diksha's photo cursor hesitates on Easy Apply, clicks on "Yes." -> "✓ Applied"
+- Profile shrinks into her tile in a 5x3 grid of Memoji job tiles; a magnifier opens into a search bar typing "terrible candidate", scan sweeps, 15 -> 0 matches
+- Search bar grows into "What actually matters" checklist (ticks on drive / want it / solve problems) -> Clay GTM Engineer posting (magnifier becomes the Clay logo; posted 1 -> 1.5 years roll, team-size bars, risk gauge) -> "Hired ✓" band
+- Hire cards fan in centred one by one (Artist, Lawyer, Teacher, Athlete), three more slide out on "random backgrounds" + camera shake; gather into a stack under "Those people were the best." + ring
+- Top card opens (pixel-matched hand-off) into a quote card: lead line + quote land on the words, sweeps after; "Let me do this one" button press
+- Editor rejected in v1: animation over the opening (wanted stack until she lists her roles), camera-cropped face (use supplied photo), made-up résumé (wanted real LinkedIn), blue avatar icons (wanted Memoji), lone off-centre fan card, band/headline under the top edge, highlighter before the words, no captions/logo. Also found: GSAP clip-path tweens froze mid-morph in render -> use the motion engine (boxTrack/setBox)
+
+## Munnawar Clip 5 - studio, diksha-clip style (remote at an in-person company: Slack, Looms, Zooms, DM every new joiner), 2026-10-29 - Claude (final v3, 2 review rounds)
+- His real photo (editor's photo, never camera stills) greyed as "Remote" beside a Clay HQ card of Apple Memoji; lights up on "visible", impact lines + Apple emoji reactions to coworkers; the photo circle opens into a "My 10 things" checklist (editor LOVED this transition), ticks on every "this", camera push to the top 3
+- Row 1 types "Be very communicative in Slack" word by word, then opens (boxTrack) into a real-layout Slack window (Clay workspace); cursor clicks #product-feedback, message typed in the composer, cursor presses Send, the same text travels into the channel; reactions + thread
+- Loom link thumbnail grows (fitIn design layer) into a Loom recording of the Clay app (Clip 3 style: control bar, Memoji cam bubble with expressions, not lip sync); cursor clicks broken Export (shake + error toast), picks the pen and circles it
+- Memoji bubble -> his Zoom tile (meeting chrome builds around it, Memoji participants, chat jokes, Apple emoji floats) -> his New York avatar; skyline draws, Memoji coworkers, blue speech bubble "You're the guy in the comments!"
+- Slack app icon opens into #help; cursor clicks Priya, her post travels into the DM as the shared message, four messages typed + sent; the window shrinks into Priya's Memoji among 500 grey dots turning blue, counter "500 people"
+- Editor rejected in v1: clip-path "slideshow" morphs (old kit + ins() "0.00px" bug), no captions/logo, camera stills inside UI (now a RULE), Windows emoji, made-up Slack/Loom. v2 notes: headline top-left looked broken, centre the intro, Memoji should act (expressions) not lip-sync, keep the plain blue-dot grid
+- Usage: 5,637K weighted units (read 64%, output 23%), ~150 tool calls incl. the v1 debugging detour
+
 ## Clip 5 - Nastia ($10K vs $10M video: smaller result, bigger audience), 2026-10-24 - Claude (final v2, 1 review round)
 - Real YouTube Studio upload dialog (file name, Scheduled chip with calendar flip, stepper, dark upload preview + %, outlined title field typing on the words with 30/100 counter, Next)
 - Dialog morphs (one element, scale 0.5 + clip on MSP, title FLIP, chrome fades) into a tile in a rebuilt YouTube home feed; second tile lands beside it, its plain thumbnail rolls $10K -> $10M (odometer) and the cash stack grows into a tower

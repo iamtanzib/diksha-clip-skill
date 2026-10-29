@@ -61,6 +61,10 @@ for name, src, extra in jobs:
         encode(src, extra, ASSETS / f"{name}.mp4")
 
 total = sum(b - a for a, b in KEEP)
+import shutil
+for cam in PROJECT["cameras"]:   # half-layout cells need their own file: two <video>s on one source can freeze one of them
+    if (ASSETS / f"{cam}_cell.mp4").exists() and (not ONLY or f"{cam}_cell" in ONLY):
+        shutil.copyfile(ASSETS / f"{cam}_cell.mp4", ASSETS / f"{cam}_half.mp4")
 for name, _, _ in jobs:
     if not ONLY or name in ONLY:
         d = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(ASSETS / f"{name}.mp4")],

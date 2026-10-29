@@ -34,7 +34,8 @@ def keep_video(m):
 
 
 src = re.sub(r"[ \t]*<video[^>]*></video>\n?", keep_video, src)
-payload = {"joins": joins, "words": data["words"], "layout": layout["layout"], "fps": FPS}
+caps = json.loads((ASSETS / "captions.json").read_text(encoding="utf-8")) if (ASSETS / "captions.json").exists() else []   # tools/captions.py
+payload = {"joins": joins, "words": data["words"], "layout": layout["layout"], "fps": FPS, "caps": caps}
 src = src.replace("/*__KIT__*/", Path("tools/kit.js").read_text(encoding="utf-8"))
 src = src.replace("__DATA__", json.dumps(payload, separators=(",", ":"), ensure_ascii=False))
 src = src.replace("    <!-- Source file. Edit tools/index.src.html, then run: python -I tools/build.py -->\n",

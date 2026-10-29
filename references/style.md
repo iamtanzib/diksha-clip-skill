@@ -15,7 +15,39 @@ Rewritten 2026-10-24 after Clips 2-5 (Clip 5 was approved after one round): ever
 - Layout changes land in pauses or on joins, never mid-word unless it is a camera switch with no join.
 - Show Diksha's face regularly, but keep the graphic running (split with host inset) through a short host question or answer
   instead of cutting to stack. Keep the graphic up to the very last frame so the final pop settles.
-- No speaker name labels. No on-screen captions. No jump punch-ins/zooms on footage (the editor adds zooms).
+- No speaker name labels. No jump punch-ins/zooms on footage (the editor adds zooms).
+- Studio (half) clips: burned-in captions on the seam (y 916-1008) and the Quest logo top-right - the template wires both from
+  `assets/captions.json` (`tools/captions.py`); never add a second captions driver. Keep UI out of the logo corner (x 853-1026, y 84-208) and above the caption band.
+- RULE (editor, 2026-10-29): never put an image or video from the clip's own footage inside a UI or graphic (two identical people confuse
+  viewers). Use the editor's real photo of the person, the Memoji (Munnawar Clip 3 SVG for the speaker, Clip 2 `assets/memoji` PNGs for
+  others), Apple emoji images (never Windows emoji glyphs) and clean SVG icons.
+
+## Studio episodes in this style (Munnawar Clips 2-5, all approved)
+Studio = Diksha and the guest in one room, no screen share. The editor wants THIS skill's casual white UI style for them (stickman only
+when the editor names it). Layout `half`: animation top 1080x960, camera bottom 1080x960, white seam, captions on the seam, logo top-right.
+- **Opening**: stacked cameras (guest top, Diksha bottom) until the line where the first explained idea starts (Diksha's question or the
+  guest's setup stays on stack). Asked on Clips 3 and 4.
+- **Who is in the bottom half**: the speaker. Diksha on screen for her whole question; the guest right before she asks; 3-5 short Diksha
+  reaction cuts on pauses in long answers ("it's Diksha's clip"), never over the guest's key or closing line.
+- **Captions + logo are mandatory** (forgotten on Clips 4 and 5 v1): the template adds them for any `half` layout. Run
+  `python -I tools/captions.py` (back-to-back blocks, no gaps; add the clip's proper nouns to KEEP_CASE). Logo: black wordmark over the
+  animation, colour logo with `mix-blend-mode: overlay` over camera-only frames. Captions 92 px bold DM Sans, letter-spacing -0.02em (not tighter).
+- Panel centre is y 480 (kit handles it). The first graphic sits centred in that half, not in a corner.
+
+## Composition and spacing ("cramped" = "BROKEN DESIGN" - noted on Clips 3, 4, 5)
+- Centre the group in the panel (x 540, studio y 480); a lone element is centred, not parked at the side.
+- Cards: >= 48-56 px inner padding, one left edge for title/subtitle/rows, each element on its own row, >= 24 px between rows.
+- >= 40 px between separate objects; text never touches a circle/card edge; a label sits under its object with a clear gap.
+- Nothing hugs the frame top: headlines and top bars start below the logo band (studio y >= 220) and are centred, never top-left.
+- No text placed just to fill space; if a spot has no clean place for text, drop the text.
+- Check every sheet for: off-centre groups, elements < 24 px apart, text under the logo/captions. Fix before sending.
+
+## Assets inside graphics
+- People: the editor's real photo (ask for it; fit it in the circle with object-fit cover) or a Memoji. NEVER stills/video from the clip's
+  own footage, never self-made background removal (ask for the cutout).
+- Emoji: Apple emoji PNGs (`assets/emoji`, template has a starter set; fetch more by codepoint), never Windows emoji glyphs.
+- Icons: clean premium SVG (Lucide-like strokes or the product's real icon). No default OS glyphs (Windows location pin), no clip-art.
+- No pills, stamps or labels the viewer cannot place ("I'm not sure what it is"); no filler words ("Yeah!"); no Like/Subscribe on non-YouTube UI.
 
 ## Inset framing (the editor cares a lot)
 Kallaway-style: hair 5-10% below the box top, head about 44% of the visible box height, shoulders filling the width, no empty ceiling.
@@ -31,16 +63,18 @@ Crop straight from 4K. If the person leans, check both extremes; the hair must n
 - All on-screen text in **English**. If a real UI is in another language, translate the UI text itself; never add translation boxes.
 
 ## Motion language (LOCKED - helpers are in `tools/kit.js`, use them, do not redefine them)
+**Read `references/motion.md` before storyboarding AND before writing scene code.** It holds the measured numbers, the
+choreography of a state change, the approved recipes and the morph QA strip. The table below is the summary.
 Measured from the editor's references (`C:/Users/tsdzs/Downloads/Motion Reference/All in one Downloader/Twitter`) and tuned over
 Clips 2-5: fast start, soft tail, never a dead stop, never rushed, one big motion at a time.
 
 | Motion | Use | Never |
 |---|---|---|
-| Camera | `camPath` keys of **1.8-2.4 s**, ease `CAMV` (default). Few, long, calm moves; re-aim slowly toward the next focus between beats | expo.out over 1.0-1.4 s ("rushed", "like a cut"); moving the camera while a strip/list/carousel travels or points build in |
-| Arrivals | `landS(el, t, from)` (SSP spring, ~8% overshoot, 1.2 s); content inside a card `softIn` | `bounce`, `back.out` pops on big cards, `power*.inOut` on anything that starts on a word |
-| Morph | `morph(el, t, from, to)`: ONE element; clip-path (`ins()`), scale and position on the SAME spring (MSP, 1.3 s, ~3% overshoot); shared title/photo/thumbnail `flip()` on the same spring at the same time; the rest of the old UI fades (0.45 s) and the new content `softIn`s ~0.3 s later | squash/anticipation (rejected twice); a second box swapped in on top; scale on one spring + clip on another; colour/fill change mid-morph; doubled lines or overlapping copies mid-morph |
+| Camera | `camSpring` (w 4.5, ~1 s) with one key per state, started WITH the morph it frames (shape leads, camera follows, each state fills the frame); calm scenes may use `camPath` 1.8-2.4 s CAMV. One shake max per clip, for an impact word | expo.out 1.0-1.4 s ("rushed"); pushes that put text under the captions/logo; a camera still moving out when the next morph starts |
+| Arrivals | content inside a MOVING shape: `swapIn` (blur 10 -> 0, 0.26 s); chrome on a settled card: `landS(el, t, {opacity:0, y:18, scale:0.94})`, no blur, staggered 0.04-0.07 s, top-down; free-standing objects: `landS` (SSP); words: `wordsLand` on the spoken words; things are born from a dot or a real UI piece, never pop out of nowhere | `bounce`, `back.out` pops on big cards, `power*.inOut` on anything that starts on a word, chrome arriving while the hero still moves |
+| Morph | ONE `.shape` whose real size/radius/position springs per frame (`boxTrack` + `setBox` in `driver`, w 10-11, 6.5-8 for big size changes, leading edge stiffer); content swaps mid-flight (`swapOut` 0.14 s at the start, `swapIn` from +0.1 s); shared faces/text/images travel on their own springs; new chrome builds after the shape lands, top-down. Old `morph()`/`flip()` are legacy: do not use | clip + scale on a fixed box with layers cross-fading (= "slideshow", rejected on every clip until Munnawar Clip 2); 1.3 s morphs; box-on-box; squash |
 | Followers | anything riding something else (pin on globe, token on a path, label on a shape, cursor): compute in ONE `driver(fn)` from pure `K()` functions of time | flying to a precomputed spot then starting to follow |
-| Exits | `fadeOut` (0.45 s power2.in + blur) or crossfade during a morph | hard cuts inside graphics; match cuts |
+| Exits | `swapOut` (0.14 s, explicit blur(0) start) during a state change; a popped element exits back into its origin (scale 0.4 + fade); a deleted message turns to dust (`makeDust`) after it was readable >= 0.8 s | hard cuts inside graphics; match cuts; exits faster than the reader can read |
 | Ambient | `breathe("#gfx")` runs the whole clip (template). Slow tails keep moving | motion blur / frame blending / tmix - never, in any render |
 
 **Continuity.** No gap > 0.8 s without intended motion (a slow camera re-aim, a settling tail, a counter). Start the next beat during the
@@ -76,12 +110,19 @@ breathing (+-9 px, 3%) x camera zoom x spring overshoot. Check camera keys at th
 - `-shortest` when remuxing audio drops the last frame. Never use it.
 
 ## First-output checklist (run through it before the first draft; every item was a past rejection)
-1. Every morph = `morph()` + `flip()` on one element, no squash, no box-on-box, no mid-morph colour change, no doubled lines.
+1. Every state change follows motion.md section 3 (one shape on springs, content swapped mid-flight, shared elements travel, chrome
+   after landing, top-down) and passes the morph strip check (motion.md section 7) BEFORE the preview is sent.
 2. Camera keys 1.8-2.4 s CAMV; nothing else big moves while the camera moves; peak-zoom framing >= 40 px.
 3. Real UI rebuilt with real assets wherever a real product/person is named; English; no inline text scaling.
 4. Graphic stays through short host lines and to the last frame; layout changes only on pauses/joins.
 5. No cursor gags/crowds/hopping boxes; choices = hesitating photo cursor.
 6. `qa.py --render` passes (check, overlaps, near-still <= 15%), one sheet looked at, no motion blur in the render.
+7. No own pills/stamps/headers inside a real UI; speech bubbles outside the media, bold blue, tail to the speaker; play buttons
+   centred; real people only from the editor's photos/cutouts.
+8. Studio: stack opening, captions + logo present, Diksha on screen for her questions, reaction cuts on pauses only.
+9. Spacing pass on the sheet (section "Composition and spacing"): centred, padded, nothing under the logo band or the captions.
+10. Memoji act (expressions), never lip-sync; Apple emoji and clean icons only; real UI is driven by a cursor (typing, clicks, Send).
+11. No blur build-ins on settled cards; no element born from nothing; highlighters after their text.
 
 ## SFX (code-generated, separate track)
 Soft whooshes on camera moves, gentle pops for arrivals, light ticks for counters/word reveals, one chime for the key number, clicks for cursors.
@@ -93,5 +134,11 @@ Peak -9 dBFS, never busy. `tools/sfx.py` + `assets/sfx_cues.json`.
 - Clip 3: 3 rounds (rushed expo camera, cursor crowds, inline-scaled UI text, heavy white "disabled" wash).
 - Clip 4: 2 rounds (mixed-timing squash morphs). Loved: MKBHD scrub preview growing into the video tile (one element, one spring).
 - Clip 5: 1 round (made-up UI instead of real YouTube Studio/feed, hopping focus box, stack cut, squash crept back). Approved v2.
+- Munnawar Clip 2 (studio, this style): v1 "slideshow" morphs again -> rebuilt on the motion engine from the editor's motion
+  reference; v2 "really did good, the morphs and animations are better", v3 approved ("it looks great"). See motion.md.
+- Munnawar Clip 3: 3 rounds (old kit morphs, blur build-ins, cramped cards, unexplained pill, lip-syncing avatar, intro jitter). KEEP: card -> Loom.
+- Munnawar Clip 4: 1 round (animation over the opening, camera-cropped face, made-up résumé vs real LinkedIn, no captions/logo, highlighter early).
+- Munnawar Clip 5: 2 rounds (v1 built on Clip 4's old kit = broken morphs + no captions; Windows emoji; made-up Slack/Loom; lip-sync).
+  LOVED: photo circle -> checklist. v2 note "reverse it to how it was": never redesign a part nobody noted.
 - Loved overall: real-UI storytelling, thumbnail -> circle orbit, one continuous dot-grid scene with calm camera, iOS notification -> Messages,
   feathered blue wipe, confetti + UI shake, Diksha's hesitating photo cursor, morph chains of the same object.
