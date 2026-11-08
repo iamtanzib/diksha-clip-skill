@@ -33,6 +33,14 @@ morphs, no captions, a whole round lost). The template is always the newest appr
 
 Do NOT load the HyperFrames skills/docs or re-research Kallaway. Load `hyperframes-core` only if a lint/check error is unclear.
 
+## Step 0: sync with the other device (FIRST command of every session, one Bash call)
+`(python3 ~/.claude/skills/diksha-clip/sync.py 2>/dev/null || python ~/.claude/skills/diksha-clip/sync.py)`
+- `SKILL UPDATED`: before anything else, tell the editor in 1-2 lines what changed (from the listed commits/files). If `SKILL.md` is
+  listed, re-read it now (the copy in context is the old one); read changed references when their step needs them.
+- `SYNC WARNING`: mention it in one line and carry on with the local copy.
+- Last command of any session that appended to `log/used.md` or edited the skill: run the same line again so the other device gets it.
+- macOS: type `python3` wherever this skill says `python`.
+
 ## Inputs (ask once if anything is missing)
 The editor provides, in the clip folder's `Inputs/`: one camera file per person (synced, usually 4K 16:9, often 25 fps), the **final edited
 audio** (always use it, never the camera audio) and its **word-level transcript JSON** (`srijon-word-transcript-v1`), sometimes a screen
