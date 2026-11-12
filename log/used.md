@@ -1,6 +1,13 @@
 # Animations already used (newest first)
 Append one block per delivered clip. Before storyboarding, avoid repeating a concept + motion pair from the last ~10 clips.
 
+## Tushar Clip 1 (studio, half) - 2026-11-12, final 4K after round 2
+- Opening: Tushar Memoji (makeMemo restyled to his episode look: denim cap, tortoise glasses, camel overshirt) born ON the stack->half cut; 4 audience cards (Memoji trios + line icons) linked to him, packets on "selling" x4.
+- Customers card -> Google Meet (avatar in his tile, expressions only) -> browser with REAL GeneralMind demo screenshots, clicks on real tabs + AutoPilot switch.
+- 3 cards -> orbit loop, centre text "Iterative thinking / Sales -> Product -> Everything"; loop spirals into the avatar (bookend), "GTM from day one".
+- Rejected in v1: Google Calendar week for "selling to customers..." (forced real UI), Calendar icon ending, v1-v4 counter.
+- tool calls: Bash 23, Read 11, update_plan 2, wrap_up 2
+
 ## Munnawar Clip 3 (define your role in a startup; wear the hats that bring you joy), 2026-10-29 - Claude (final v4, 3 review rounds), STUDIO in casual style
 - Layout: stack 0-5.8 s, then half (animation top, guest bottom), 3 Diksha reaction cuts; captions on the seam + logo
 - One shape: avatar dot -> name pill -> Clay badge (role field types "Head of Community", strike, "Before that" Clay Cup + Educator chips) -> tracks board (chips ride to lane starts) -> "My job" card (Clay Cup lane thickens into the job bar, 20 -> 30%)
