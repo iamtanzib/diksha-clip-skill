@@ -1,6 +1,15 @@
 # Animations already used (newest first)
 Append one block per delivered clip. Before storyboarding, avoid repeating a concept + motion pair from the last ~10 clips.
 
+## Tushar Clip 5 (studio, half) - 2026-11-12, final 4K after round 3
+- Flight-path intro: India / Germany pills + dashed arc, Tushar SVG Memoji rides it on each "go back to", sways on "identity", "?" on "belong";
+  flags -> line-icon hearts -> houses (editor: Apple emoji hearts/houses = cringe); loop closes on "both places"; Germany pill -> Mom card -> level slider
+- Rejected: Google Flights/Maps (forced UI), home cards + emoji, YouTube music video, Schlager record, iPhone call w/ cursor, 5x5 Teams gallery, "found: 47" counter
+- Weak middle replaced by camera-only stack (editor's call); graphics from frame 0 (no stack opening)
+- Teams (Memoji tiles) -> d3 world map (US/DE countries light up, pins pulse) -> turning d3 orthographic globe, pins ride it, "Sandeep" tags wave
+- Generic Indian men = SVG makeMemo variants (hair, no cap); captions hand-chunked (never end on I/a/to; "mother tongue" together)
+- Usage: 3 rounds + final in one session (skill says one session per phase: don't repeat)
+
 ## Tushar Clip 3 (studio, half) - 2026-11-12, final 4K after round 2
 - Express metro map: GeneralMind station born ON the stack->half cut, express line to a PE-firm hub, 5 sector branches; camera offset centres station + label.
 - Handshake born where two dots from both stations meet mid-line, shrinks back into the line; trains born from the hub one by one, shrink into their stations (no fades).
