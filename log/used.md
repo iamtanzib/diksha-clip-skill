@@ -1,6 +1,13 @@
 # Animations already used (newest first)
 Append one block per delivered clip. Before storyboarding, avoid repeating a concept + motion pair from the last ~10 clips.
 
+## Tushar Clip 3 (studio, half) - 2026-11-12, final 4K after round 2
+- Express metro map: GeneralMind station born ON the stack->half cut, express line to a PE-firm hub, 5 sector branches; camera offset centres station + label.
+- Handshake born where two dots from both stations meet mid-line, shrinks back into the line; trains born from the hub one by one, shrink into their stations (no fades).
+- Train pill opens into a rebuilt DB Navigator journey card: one stop per introduction, red delays in weeks, Memoji stops -> Reply-all stack, "Stop cancelled", 10-dot 6-7/10 ending.
+- Round 2 notes: captions from 0, clip 1 framing, smoother springs, map centred, handshake origin, train bunching.
+- usage (round 2 + final session): 2,668K units; Bash 51, Read 9, Write 9
+
 ## Tushar Clip 1 (studio, half) - 2026-11-12, final 4K after round 2
 - Opening: Tushar Memoji (makeMemo restyled to his episode look: denim cap, tortoise glasses, camel overshirt) born ON the stack->half cut; 4 audience cards (Memoji trios + line icons) linked to him, packets on "selling" x4.
 - Customers card -> Google Meet (avatar in his tile, expressions only) -> browser with REAL GeneralMind demo screenshots, clicks on real tabs + AutoPilot switch.
