@@ -18,8 +18,12 @@ So:
   `fitIn()` so it scales with the shape while it is visible.
 - Shared elements TRAVEL instead of being replaced: the same face, the same text, the same image moves to its new place on its own
   spring (crowd Memoji -> message avatar, circle -> Slack rounded square; composer text -> sent message; avatar -> channel avatar).
+- A BIRTH (dot -> card, line -> frame) is not a swap: the small thing PERSISTS as part of the big thing (the dot becomes the card's
+  icon disc, the line's edge becomes the frame's border) and the big thing opens around it. Section 4c, `layBorn()`. The swap way
+  (box grows while its colour tweens accent -> white and the content blurs in) was rejected twice as "not smooth like a morph".
 - What is NOT a morph (every one was rejected): a fixed box clipped + scaled while two layers cross-fade; fading the old card out and
-  the new one in; a second box on top; the new UI appearing while the hero is still flying; 1.3 s MSP morphs (too slow = "slideshow").
+  the new one in; a second box on top; the new UI appearing while the hero is still flying; 1.3 s MSP morphs (too slow = "slideshow");
+  a box whose background colour tweens between two flat colours mid-growth (reads as a pale blob).
 
 ## 2. Measured numbers (frame by frame on the reference, 60 fps)
 | What | Reference | Our setting |
@@ -42,6 +46,8 @@ So:
    Chrome landing on a SETTLED layout rises on a soft spring with NO blur: `landS(el, t, {opacity: 0, y: 18, scale: 0.94})`.
    Blur (`swapIn`) is only for content swapping inside a shape that is still moving - the motion hides it. Blur build-ins on a still
    card read as "coming in with a blur just like a slideshow" (Munnawar Clip 3 v2).
+   TEXT (headings, labels, words on speech) always uses the measured AE rise: `wordsLand` / `riseIn` (section 4c). Never `swapIn`
+   or `landS` for text.
 6. Leave it: let it settle >= 0.8 s before the next out animation (a sent message that vanished after 0.35 s was "too fast").
 
 ## 4. Recipes that were approved (Clip 2)
@@ -85,6 +91,21 @@ screen below. Per beat: grin + raised brows, wink, surprised "o", frown, pleadin
 light head bob; mouth moves only occasionally. Reference rig: Clip 5 `function makeMemo` + `poseMemo(M, t, {sm, open, brow, wink, lx, ly, tilt})`
 (drawn SVG of Munnawar; recolour hair/skin/clothes for another guest). Other people: `assets/memoji/*.png` (template).
 
+## 4c. Approved in Tushar Notebook 1 (2026-11-13, v1 -> v3; editor: "YOO the morph is great", "looks good")
+Source: `.../Tushar Notebook Page Rebuild/Notebook Page 1/WORK/tools/index.src.html` (anchors `layCard`, `hover`, `line -> frame`,
+`riseWords`). Helpers now in the kit: `layBorn`, `hoverK`, `growBox`, `riseIn`, `wordsLand`.
+
+| Beat | Approved way | Rejected way (the note) |
+|---|---|---|
+| Dot -> card (KEEP) | the dot pops on its word (36-40 px, `landS`-like pop), may drift; on the item's word the card box springs (`boxTrack` w 6.5) from the dot to the card; the dot stays the blue icon disc (fills the dot, settles to its icon size, icon fades in at 25-60 % growth) and the white card opens around it; the title rises in (`riseIn`) at word + 0.2 s. `layBorn()` per frame | box tweening blue -> white + content `swapIn` ("morph is not good, not smooth like a morph", "how you forgot about morph and transition") |
+| Line -> frame | a 4 px blue line (2 px border each side, transparent fill) grows into the frame (w 6); the border stays 2 px and fades to 10 % accent while the fill goes to white and the shadow comes in, all driven by the width progress | solid blue box tweening its colour to white ("this morph should be better and smoother") |
+| A new item joining a set | a placeholder slot opens on the phrase that announces it ("Maybe even" -> dashed slot), then its dot pops IN the slot on its word and is born like the others | a tiny dot flying in from another card ("where does this come from, why it comes out from nowhere") |
+| Highlight the item being said | hover: card tints `#dbeafe` + grows ~4.5 % (box and content), up 0.25 s; it lets go when the NEXT item is said (`hoverK([[on, offAtNextWord]], t)`) | outline/ring box around the card ("looks like broke design"); hovers in a pause with no spoken reason; the previous item staying lit |
+| Relations between cards | nothing, or the camera/hover tells it | curved connector arrows + riding packet/coin icons ("why these lines? clutter, remove") |
+| Pause (speaker thinking 2-3 s) | one slow camera push (`camSpring` key, w 1.1-1.2, +3-8 % zoom) | filler highlights |
+| Text entrance (every heading, label, word) | measured from the editor's AE refs `~/Downloads/Text Animation for claude /` (Slide Blur Up, Smooth Color Slide Up, 30 fps): each word rises ~0.45 em (30 px at 64-68 px type) from BELOW, out of an 8 px blur and an accent tint (#2563eb; italic/accent words from #93c5fd) into its own colour; one exponential ease `(1-e^-6.5p)/(1-e^-6.5)` over 0.7 s (visually settled ~0.35 s), staggered on the spoken words | `swapIn` words (10 px blur, short travel, landing near the top while the camera is zoomed: "too much blur, too high in position"); the same rise with no blur over 1 s ("too slow, no blur at all") |
+| Heading vs camera | the camera pulls out BEFORE the heading's first word lands (heading never lands near the panel edge mid-zoom) | heading built while the camera is still zoomed in |
+
 ## 5. Real UI rules that came with it
 - A named platform = its real UI (Slack, YouTube watch page / home feed, LinkedIn post) with real assets. Never interrupt real UI with our
   own pills, stamps, "X = definition" headers or labels inside it; our own overlays (trust HUD) live outside the card.
@@ -121,3 +142,5 @@ ffmpeg -v error -y -i qa/strip_318.jpg -i qa/strip_576.jpg -i qa/strip_815.jpg -
 (online layout: crop `1080:1260:0:0`). Pass = every strip shows >= 3 in-between frames where the shape is visibly between its two
 states with content mid-swap; no frame with an empty card; no new chrome overlapping a still-moving shape; no text under the captions
 or the logo. If a big change collapses in < 4 frames, lower its key's w (6.5-8).
+Extra checks (Notebook 1): during a birth the small thing is visible in EVERY in-between frame (no frame where only a pale box
+shows); every new item has a visible origin; no hover without its word; text rises from below with a blur that is gone within ~9 frames.

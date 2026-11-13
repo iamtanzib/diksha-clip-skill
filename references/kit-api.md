@@ -31,7 +31,10 @@ All pure functions of t; geometry is applied inside the ONE `driver()`. Kit bloc
 | `fitIn(layer, box, dw, dh)` | scale a fixed-size designed layer (a thumbnail) to the box width, centred; layer = the inner wrapper |
 | `swapIn(el, t, d=0.26, y=10)` / `swapOut(el, t, d=0.14)` | content swap with a short blur; `y=null` for driver-positioned elements |
 | `swapInAll(els, t, gap=0.045, y)` / `swapOutAll(els, t, gap=0.02)` | staggered chrome build / clear |
-| `wrapWords(el)` + `wordsLand(sel, times)` | words land on speech (throws if word and time counts differ); hand-written `.w` spans for coloured words |
+| `wrapWords(el)` + `wordsLand(sel, times, y=30)` | words land on speech with the AE rise (`riseIn` each `.w`; throws if word and time counts differ); hand-written `.w` spans for coloured words (`i`/`em`/`.acc` words start from #93c5fd) |
+| `riseIn(el, t, y=30, tint)` | THE text entrance (motion.md 4c): 30 px rise from below + 8 px blur + accent tint -> own colour, 0.7 s exp ease. The element must not be driver-positioned (put the driver on a wrapper) |
+| `layBorn(card, disc, label, box, {S, D0, dy, ly, done})` -> P | THE birth morph (dot -> card), call per frame in `driver()`: the dot stays the icon disc, the card opens around it. Then overwrite `card.style.background` for a hover tint |
+| `hoverK([[on, off], ...], t)` -> 0..1 + `growBox(box, e)` | hover highlight of the spoken item: `growBox(box, h * 0.045 * min(w,h))` + background mix white -> #dbeafe; off = the next item's word |
 | `seq("spoken phrase", after)` | word start times for a phrase, skipping spoken words that are not shown |
 | `camSpring(cam, [[t,[cx,cy,zoom],w?],...], {w:4.5, z:0.92, shakes:[[t,amp]]})` -> f(t) | spring camera (call f(t) in the driver) + decaying shake hits |
 | `press(svgSel, t)` | cursor press (scale 0.8 -> 1) at a click |

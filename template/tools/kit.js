@@ -537,10 +537,56 @@ function wrapWords(el) {
   el = typeof el === "string" ? document.querySelector(el) : el;
   el.innerHTML = el.textContent.trim().split(/\s+/).map((w) => `<span class="w">${w}</span>`).join(" ");
 }
-function wordsLand(sel, times) {
+// Text entrance (editor-approved, Tushar Notebook 1 v3, measured from the editor's AE refs "Slide Blur Up" + "Smooth Color Slide Up"):
+// rise ~0.45 em from below out of an 8 px blur and an accent tint into the element's own colour, one fast exponential ease,
+// 0.7 s tween, visually settled ~0.35 s. Rejected: a 10 px blur dropping from above ("too much blur, too high"), the same rise
+// with no blur over 1 s ("too slow, no blur at all"). Use for every heading/label/word build; swapIn stays for content swapping
+// inside a moving shape. The element must not be positioned by the driver (wrap it: the driver moves the parent).
+const RISE = (p) => (1 - Math.exp(-6.5 * p)) / (1 - Math.exp(-6.5));
+function riseIn(el, t, y = 30, tint = "#2563eb") {
+  const e = typeof el === "string" ? document.querySelector(el) : el, c = getComputedStyle(e).color;
+  return tl.fromTo(e, { opacity: 0, y, color: tint, filter: "blur(8px)" },
+    { opacity: 1, y: 0, color: c, filter: "blur(0px)", duration: 0.7, ease: RISE }, t);
+}
+function wordsLand(sel, times, y = 30) {
   const ws = [...document.querySelectorAll(sel + " .w")];
   if (ws.length !== times.length) throw new Error(`wordsLand ${sel}: ${ws.length} words, ${times.length} times`);
-  ws.forEach((w, i) => swapIn(w, times[i] - 0.04, 0.22, 10));
+  ws.forEach((w, i) => riseIn(w, times[i] - 0.05, y, w.closest("i, em, .acc") ? "#93c5fd" : "#2563eb"));
+}
+const riseWords = wordsLand;
+
+// Hover = how a spoken item is highlighted (editor: "instead of this box make a hover effect, a bit blue and a bit bigger").
+// intervals [[on, off], ...]: on = the item's word, off = the NEXT item's word (the previous one lets go when the next is said).
+// Returns 0..1; in the driver: box = grow(box, h * 0.045 * min(w, h)), background = mix(white, #dbeafe, h). Never rings or outline
+// boxes, and never a hover without a spoken reason (pause filler hovers were rejected).
+function hoverK(intervals, t) {
+  return intervals.reduce((m, [a, b]) => {
+    const up = 1 - Math.pow(1 - Math.max(0, Math.min(1, (t - a) / 0.25)), 3), x = Math.max(0, Math.min(1, (t - b) / 0.3));
+    return Math.max(m, up * (1 - x * x * (3 - 2 * x)));
+  }, 0);
+}
+const growBox = (b, e) => [b[0] - e, b[1] - e, b[2] + 2 * e, b[3] + 2 * e, b[4] + e];
+
+// THE birth morph (editor KEEP, "the morph looks great now!!"): a dot becomes a card. The dot IS the card's icon disc and stays
+// on screen the whole time; the white card opens around it on the card's boxTrack spring (w 6.5). Call every frame in driver().
+// card: the .shape (white bg); disc: the round icon element inside it; label: a WRAPPER of the title (title itself gets riseIn).
+// P = birth progress 0..1 from the box size; pass done = true once the card has settled so later resizes keep the layout.
+// Design size: card S x S, disc D0, disc centre dy above the card centre, label centre ly below it (all at S).
+// Rejected way: the same box tweening its colour accent -> white while the content blurs in = "a pale blob", "not a morph".
+function layBorn(card, disc, label, b, { S = 288, D0 = 112, dy = 32, ly = 69, dot = 44, done = false, accent = [37, 99, 235] } = {}) {
+  const m = Math.min(b[2], b[3]), x = Math.max(0, Math.min(1, (m - dot) / (S - dot - 44)));
+  const P = done ? 1 : x * x * (3 - 2 * x), s = Math.max(0, Math.min(1.1, m / S));
+  const D = Math.min(m, m + (D0 * s - m) * P), cx = b[2] / 2, cy = b[3] / 2 - dy * s * P;
+  disc.style.transform = `translate(${(cx - D / 2).toFixed(2)}px, ${(cy - D / 2).toFixed(2)}px)`;
+  disc.style.width = disc.style.height = D.toFixed(2) + "px";
+  if (disc.firstElementChild) {   // icon wrapper (D0 x D0) scales with the disc and fades in as the card opens
+    disc.firstElementChild.style.transform = `scale(${(D / D0).toFixed(4)})`;
+    disc.firstElementChild.style.opacity = Math.max(0, Math.min(1, (P - 0.25) / 0.35)).toFixed(3);
+  }
+  if (label) label.style.transform = `translate(${(cx - label.offsetWidth / 2).toFixed(2)}px, ${(b[3] / 2 + ly * s - label.offsetHeight / 2).toFixed(2)}px) scale(${s.toFixed(4)})`;
+  const k = Math.min(1, P / 0.15), mix = accent.map((v) => Math.round(v + (255 - v) * k));
+  card.style.background = `rgb(${mix.join(",")})`;   // only hidden under the disc while it is a dot; overwrite after for hover tint
+  return P;
 }
 // Spoken phrase -> word start times, walking the transcript from `after` and skipping words that are spoken but not shown.
 function seq(str, after = 0) {
@@ -610,4 +656,6 @@ function makeDust(canvas, rects, t0, { top = 0, cw = 860, ch = 260, x0 = 24, spa
   const ok = Math.abs(spring(2) - 1) < 1e-3 && spring(0.41) > 1.02 && spring(0.41) < 1.06 && spring(0) === 0;
   const f = track([[0, [0]], [1, [10]], [1.2, [4]]]);
   if (!ok || Math.abs(f(1.2) - f(1.2001)) > 0.05 || Math.abs(f(9)[0] - 4) > 1e-3) console.error("MOTION ENGINE self-check failed");
+  if (Math.abs(hoverK([[1, 2]], 1.6) - 1) > 1e-6 || hoverK([[1, 2]], 2.4) !== 0 || hoverK([[1, 2]], 0.9) !== 0 || RISE(1) !== 1)
+    console.error("hover/rise self-check failed");
 })();

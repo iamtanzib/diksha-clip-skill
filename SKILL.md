@@ -74,6 +74,8 @@ Ask only: who speaks which lines if unclear, whether a screen share appears, mus
    `tools/layout.json` in ONE Write each. Anchor every time with `W()`/`seq()`. Every state change uses the motion engine as motion.md says
    (`boxTrack`/`setBox` shape, `swapIn` inside moving shapes, `landS` no-blur build on settled cards, shared elements on their own damped
    springs, chrome after landing top-down, `camSpring`); all geometry in one `driver()`. Never `morph()`/`flip()`/clip-path tweens.
+   Births use `layBorn` (the dot persists as the icon; never a colour-tweened box), text uses `wordsLand`/`riseIn` (never `swapIn` for
+   text), the spoken item is highlighted with `hoverK` (never rings, never connector arrows as decoration) - motion.md 4c.
 6. **QA (all text gates pass BEFORE any picture)**:
    - `python -I tools/qa.py` - build + lint + check (incl. tween overlaps, camPath overlaps). Fix until it prints no FAIL.
    - `python -I tools/qa.py --render --at <6-8 key times>` **in the background** (you are notified; never poll): draft render,
