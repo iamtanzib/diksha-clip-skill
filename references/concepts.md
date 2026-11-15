@@ -17,10 +17,18 @@ Each episode covers different topics, so most clips need **concept animations**,
    Plan the whole clip as 1-3 **morph chains** of the same object (what made Clips 4-5 land first time), e.g.
    upload dialog -> feed tile -> highlighted price -> pill on a staircase -> slider -> audience circle -> pyramid base.
    Write the chain in the storyboard (A -> B -> C) so the build has no design decisions left.
-4. **Real first, concept second.** If the line names YouTube, a channel, a video, an app or a person, the first beat is that real UI
-   rebuilt (real thumbnails/titles/views). Concept objects then grow out of a real element (a thumbnail, a title word, a view count).
+4. **Real first, concept second - but only when the line is ABOUT the product.** If the line is about YouTube, a channel, a video, an app
+   or what someone did in it, the first beat is that real UI rebuilt (real thumbnails/titles/views). Concept objects then grow out of a
+   real element (a thumbnail, a title word, a view count). A product only mentioned in passing, or an abstract idea (selling, friends,
+   GTM), gets a concept graphic, never a forced product screen (Tushar batch v1 rejection; style.md "Real UI").
 5. Map every motion beat to a spoken word.
 6. Check `log/used.md`: no concept + motion pair may repeat from the last ~10 clips. Reuse the system (camera, highlights, morphs), not the scene.
+
+## When the editor rejects a concept
+Never rebuild a rejected concept on your own pick. Design 2 replacement concepts (one line each, the recommended one first), ask the
+editor with AskUserQuestion, then build the chosen one (Tushar Clip 4 r2 and Notebook 5/6: the editor took the pick in one answer; a
+self-chosen replacement in Notebook 5 v2 was rejected again). A weak beat can also become a camera-only stack (Tushar Clip 5 r3: the
+editor preferred the stack to a weak concept scene) - offer that as one of the two options when the line has no strong visual idea.
 
 ## Storyboard table (what you show the editor)
 `time · line · layout · graphic idea · motion beats (word → action) · SFX`

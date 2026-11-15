@@ -105,6 +105,8 @@ Section `data-start`/`data-duration` must match the layout rows (`{{T:x}}`, `{{S
 | `python -I tools/motion_check.py <mp4>` / `qa_cuts.py <mp4>` | the individual gates (qa.py runs them) |
 
 ## Gotchas
+- Repeated words: `W("then")` returns the FIRST "then" (Notebook 5 matched one at 0.18 s). Any word that occurs more than once in the
+  clip gets its occurrence index (`W("then", 2)`) - grep words.json before anchoring. `qa.py --at` takes ONE comma list ("2.9,4.25").
 - No `left/top/width/height` GSAP tweens (lint `gsap_non_transform_motion`); per-frame width/height from the driver are fine,
   position goes through translate (`setBox`).
 - GSAP and the driver never touch the same property of one element: GSAP on the wrapper, the driver on the inner element.

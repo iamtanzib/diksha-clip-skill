@@ -39,7 +39,8 @@ Do NOT load the HyperFrames skills/docs or re-research Kallaway. Load `hyperfram
   listed, re-read it now (the copy in context is the old one); read changed references when their step needs them.
 - `SYNC WARNING`: mention it in one line and carry on with the local copy.
 - Last command of any session that appended to `log/used.md` or edited the skill: run the same line again so the other device gets it.
-- macOS: type `python3` wherever this skill says `python`.
+- macOS: type `python3` wherever this skill says `python`. If Homebrew's `python3` has no numpy (3.15 on the Mac mini), run the tools
+  with `/usr/bin/python3` WITHOUT `-I` (numpy lives in its user site). yt-dlp from Homebrew (the pip one is too old).
 
 ## Inputs (ask once if anything is missing)
 The editor provides, in the clip folder's `Inputs/`: one camera file per person (synced, usually 4K 16:9, often 25 fps), the **final edited
@@ -61,7 +62,9 @@ Ask only: who speaks which lines if unclear, whether a screen share appears, mus
 2. **Align + conform** (chain with `&&`, read only the summary lines):
    - `python -I tools/align_audio.py && python -I tools/framing.py grid` - every chunk ncc >= 0.9 (a low score = patched word: tell the
      editor where); then view the ONE grid image, read hair/chin/face-x per person. Same guest + studio as an earlier clip: reuse its crops.
-   - `python -I tools/framing.py suggest --cam guest ... && python -I tools/framing.py suggest --cam host ...`, paste crops, `python -I tools/conform.py`.
+   - `python -I tools/framing.py suggest --cam guest ... && python -I tools/framing.py suggest --cam host ...`, paste crops,
+     `python -I tools/conform.py && python -I tools/blackfix.py` (blackfix freezes the previous frame over any black frame in every
+     conformed camera; the Tushar exports all had one at 19.875 s, Clip 5 another at 49.29 s - run it on EVERY clip, not only known frames).
    - Studio: `python -I tools/captions.py` (add the clip's proper nouns to KEEP_CASE first). Build reads `assets/captions.json`.
 3. **Real assets** (only if a real product/person appears): ONE script call that fetches everything (yt-dlp metadata, `i.ytimg.com`
    thumbnails, logos, Apple emoji PNGs by codepoint) into `assets/` and prints one line per asset. No browsing pages for it.
@@ -100,7 +103,24 @@ Ask only: who speaks which lines if unclear, whether a screen share appears, mus
 Deliverables unless told otherwise: 4K 24 fps video with voice only (noSFX), SFX whooshes wav, SFX UI wav (pops/ticks/clicks), SFX all wav,
 all exactly the clip length from 0:00. Commands in `references/kit-api.md` ("Final export"); run in the background; no `-shortest`; never
 motion blur. A 4K render needs ~15 GB temp: if C: has less free, point TEMP/TMP at a D: folder for that command and delete it after.
+Put the deliverables in the clip's `Export/Claude Export/` folder (create it; the editor's folders sometimes have a trailing space -
+`ls` first and use the existing one): `ClipN_4K_noSFX.mp4`, `ClipN_SFX_whooshes.wav`, `ClipN_SFX_ui.wav`, `ClipN_SFX_all.wav` - the
+editor wants the SFX as separate stems every time. After checking the deliverable (ffprobe duration/fps + one frame), delete the
+render intermediates: ProRes/alpha MOVs, `renders/*draft*`, FFV1 frame folders, `$TMPDIR/hyperframes-extract-cache-*` (the Mac's disk
+runs full mid-render; the editor complained).
 Then append 5-8 lines to `log/used.md` (newest first, incl. the usage line from `tools/usage.py`). No skill edits in a clip session.
+
+## Batch mode (`/diksha-clip batch <Clips folder>`: several clips of one episode at once - Tushar Clips 1-5)
+Use when the editor asks for all clips together (no storyboard, no clip-by-clip approval, revisions after all previews).
+- Work folder `Clips/Work/`: `BRIEF_COMMON.md` (episode facts, speakers per clip, assets, house notes, the global revision list as it
+  grows), one project per clip `Work/clipN` (each with PLAN.md + HANDOFF.md), shared real assets in `Clips/Assets/web/`.
+- Do the shared work ONCE: crops (same studio = same crops for every clip), the speaker's makeMemo restyle, logos/photos/assets fetch.
+- Renders: `cp ~/.claude/skills/diksha-clip/tools/render_slot.sh Work/` = a semaphore of max 2 concurrent renders on a 16 GB Mac
+  (zsh; stale locks cleared, temp in `Work/.tmp`); every render runs through it: `zsh ../render_slot.sh python3 tools/qa.py --render ...`. Builder agents may run in parallel, one per clip.
+- Previews: `Clips/Previews/<Guest>ClipN_v1_1080p.mp4`, all sent together. 4K only after that clip's notes are done.
+- Revisions: the editor's `Work/Revisions/Global Revision.md` applies to EVERY clip: fold each global note into BRIEF_COMMON.md and
+  check it before sending any clip's next round. Per-clip notes use the normal revise flow (one patch per round).
+- Never work on a nearly full drive: move the Work folder to the internal disk first.
 
 ## Cost discipline (mandatory)
 Measured on Munnawar Clips 2-5 (avg ~6.2M weighted units per clip, 140-170 calls each):

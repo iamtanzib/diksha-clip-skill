@@ -25,6 +25,8 @@ pkg = Path("package.json").read_text(encoding="utf-8") if Path("package.json").e
 m = re.search(r"hyperframes@[0-9.]+", pkg)
 HF = f"npx --yes {m.group(0) if m else 'hyperframes'}"
 PY = f'"{sys.executable}"'   # same interpreter on every OS (macOS has no plain `python`)
+# -I only when numpy still imports under it (macOS /usr/bin/python3 keeps numpy in the user site, which -I hides)
+PYI = PY + ("" if subprocess.run([sys.executable, "-I", "-c", "import numpy"], capture_output=True).returncode else " -I")
 KEEP = re.compile(r"error|fail|overlap|campath|✗|×|⚠|not found|exception", re.I)
 # Template-level lint warnings that are known and harmless in this house setup (one big file, breathing #gfx, bg layers).
 IGNORE = re.compile(r"composition_file_too_large|nested_structure_needs_sub|negative_z_index|"
@@ -49,7 +51,7 @@ def run(name, cmd, max_lines=18, gate=True, raw=False):
     return out
 
 
-run("build", f"{PY} -I tools/build.py")
+run("build", f"{PYI} tools/build.py")
 run("lint", f"{HF} lint")
 run("check (layout + tween overlaps)", f"{HF} check")
 if not a.render:
@@ -57,10 +59,10 @@ if not a.render:
 
 Path(a.out).parent.mkdir(parents=True, exist_ok=True)
 run("draft render", f'{HF} render -q draft -o "{a.out}"', max_lines=6)
-run("motion_check", f'{PY} -I tools/motion_check.py "{a.out}"', max_lines=25, raw=True)
-run("qa_cuts", f'{PY} -I tools/qa_cuts.py "{a.out}"', max_lines=12, gate=False, raw=True)
+run("motion_check", f'{PYI} tools/motion_check.py "{a.out}"', max_lines=25, raw=True)
+run("qa_cuts", f'{PYI} tools/qa_cuts.py "{a.out}"', max_lines=12, gate=False, raw=True)
 if a.at:
     half = any(r[1] == "half" for r in json.load(open("tools/layout.json", encoding="utf-8"))["layout"])
     crop = "" if a.full else f" --crop 0:0:1080:{960 if half else 1260}"
-    run("sheet", f'{PY} -I tools/sheet.py "{a.out}" {a.at}{crop} --out qa/sheet.jpg', max_lines=3)
+    run("sheet", f'{PYI} tools/sheet.py "{a.out}" {a.at}{crop} --out qa/sheet.jpg', max_lines=3)
 print("ALL GATES PASS" + (" -> open qa/sheet.jpg once" if a.at else ""))

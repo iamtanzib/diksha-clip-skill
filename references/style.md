@@ -32,6 +32,9 @@ when the editor names it). Layout `half`: animation top 1080x960, camera bottom 
 - **Captions + logo are mandatory** (forgotten on Clips 4 and 5 v1): the template adds them for any `half` layout. Run
   `python -I tools/captions.py` (back-to-back blocks, no gaps; add the clip's proper nouns to KEEP_CASE). Logo: black wordmark over the
   animation, colour logo with `mix-blend-mode: overlay` over camera-only frames. Captions 92 px bold DM Sans, letter-spacing -0.02em (not tighter).
+- **Captions from frame 0** (the first block's start = 0, Tushar global note). **Chunk by phrase**: a block never ends on a function word
+  (I, a, an, to, the, my, of, and, in, so) and compounds stay together ("mother tongue", "go to market"). Read the whole captions.json
+  once after `captions.py` and hand-fix breaks; the editor calls out inconsistent breaks across the whole clip (Tushar Clip 5 r3).
 - Panel centre is y 480 (kit handles it). The first graphic sits centred in that half, not in a corner.
 
 ## Composition and spacing ("cramped" = "BROKEN DESIGN" - noted on Clips 3, 4, 5)
@@ -45,7 +48,17 @@ when the editor names it). Layout `half`: animation top 1080x960, camera bottom 
 ## Assets inside graphics
 - People: the editor's real photo (ask for it; fit it in the circle with object-fit cover) or a Memoji. NEVER stills/video from the clip's
   own footage, never self-made background removal (ask for the cutout).
-- Emoji: Apple emoji PNGs (`assets/emoji`, template has a starter set; fetch more by codepoint), never Windows emoji glyphs.
+  - Photo crop: whole head + shoulders in the circle (Tushar Clip 4: the tight face crop of Diksha was rejected). When the person has an
+    official website headshot, use it over a snapshot the editor sent (Tushar: `Clips/Assets/web/gm/founders/Tushar.png`).
+  - The speaker himself, when he appears as a character: a Munnawar-style SVG Memoji (`makeMemo`) restyled to his look in THIS episode
+    (cap, glasses, hair, clothes from the grid frame), acting with expressions/nods, never lip sync. Memoji PNGs (`assets/memoji`) only
+    for generic unnamed people (generic Indian colleague = m3, not the darker m21).
+  - Never a photo of a named outsider who is not in the podcast (Tushar Clip 2 r3: the client removed the Siemens CEO's photo); use a
+    Memoji or a line-icon person with the name/title as text.
+- Emoji: Apple emoji PNGs (`assets/emoji`, template has a starter set; fetch more by codepoint), never Windows emoji glyphs. Only for
+  flags and natural reactions. NEVER as concept icons (Tushar Clip 5: Apple emoji hearts/houses = "cringe"): use accent line icons.
+- Movie/TV/music-video footage carries a small courtesy line bottom-left of the media: film title + the YouTube channel it came from,
+  15 px, 60 % white (dark media) or 60 % ink (light), never a box.
 - Icons: clean premium SVG (Lucide-like strokes or the product's real icon). No default OS glyphs (Windows location pin), no clip-art.
 - No pills, stamps or labels the viewer cannot place ("I'm not sure what it is"); no filler words ("Yeah!"); no Like/Subscribe on non-YouTube UI.
 
@@ -89,11 +102,20 @@ A pure clip "window opening" over a large area: gentler start (`CAMV`, 1.4 s) an
 
 **Timing.** Start each change on the spoken word with `W()`, 0.05-0.15 s early. Never morph or start a scene before the line that talks about it.
 Pre-roll entrances ~0.15 s before a cut into split. Let the last animation settle before the clip ends.
+**Animations near a cut go ON the cut.** Any birth/morph/layout change that would land within 5-10 frames of a jump cut (an audio join)
+moves onto that cut frame: the motion hides the jump. The stack -> half split itself sits on a cut (Tushar global note).
 
 **Real UI.** When the talk is about YouTube/a real product, rebuild the real UI (Studio upload dialog, home feed, channel page, search,
 watch page, Up next) with real assets (yt-dlp metadata, `i.ytimg.com` thumbnails, avatar/banner), never a made-up card and never a zoomed
 screen recording. Cap camera zoom on full-width UI at ~1.08. Never scale words/numbers inside real UI text (overlaps neighbours):
 colour + marker sweep only. "Disabled" thumbnails: B&W via an overlay with `mix-blend-mode: saturation` + light wash (~0.2), no CSS filter on cards with thumbnails.
+- **Real UI ONLY when the line is about that product's screen or an action done in it** (Tushar batch v1: the editor was angry about a
+  Google Calendar week for "I'm selling to customers, employees...", a Facebook friends list for "no friends", a Calendar icon for "GTM from
+  day one"). For every beat ask: "is he talking about this product's screen?" No -> explainer graphics (cards, Memoji people, line icons).
+  A product merely existing in the story is not a reason to show its UI.
+- **When real UI IS used it is the actual product**, rebuilt from the live product (GeneralMind: the "Play with our product" demo on
+  generalmind.com, iframe `gm-demo-git-website-general-mind.vercel.app`), never a guessed look. Every cursor click hits a real control
+  and shows that control's real result. The whole UI stays inside the frame at every moment.
 
 **People and choices.** "Choosing between options" = Diksha's cursor (her photo in a name pill) hovering with `hesitate()` wobble, then a click
 (ripple, press, selection outline). Never a hopping focus box, never cursor crowds as an "audience" (use sized circles / dimming / camera focus).
@@ -122,6 +144,9 @@ breathing (+-9 px, 3%) x camera zoom x spring overshoot. Check camera keys at th
 8. Studio: stack opening, captions + logo present, Diksha on screen for her questions, reaction cuts on pauses only.
 9. Spacing pass on the sheet (section "Composition and spacing"): centred, padded, nothing under the logo band or the captions.
 10. Memoji act (expressions), never lip-sync; Apple emoji and clean icons only; real UI is driven by a cursor (typing, clicks, Send).
+11. Every real UI passes "is he talking about this product's screen?"; no Apple emoji as concept icons; no photos of named outsiders;
+    film footage has its courtesy line.
+12. Captions start at 0 and no block ends on a function word; every animation within 10 frames of a join sits on the join.
 11. No blur build-ins on settled cards; no element born from nothing; highlighters after their text.
 
 ## SFX (code-generated, separate track)
